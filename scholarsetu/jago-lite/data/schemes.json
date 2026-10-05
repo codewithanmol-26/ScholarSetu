@@ -1,0 +1,16 @@
+{
+ "_note": "Rules below come from the ScholarSetu prototype (income <= 2.5 lakh, NOS 60% marks). A null value means the limit is NOT verified yet: Jago will say so instead of guessing. Fill from official guidelines (scholarships.gov.in / tribal.gov.in) and set verified:true.",
+ "documents_common": ["ST (caste) certificate", "Income certificate", "Marksheet of last exam", "Bank account linked with Aadhaar", "Proof of enrolment in the institute"],
+ "schemes": [
+  {"id":"pre_matric","name":"Pre-Matric Scholarship for ST students","verified":false,"portal":"https://scholarships.gov.in",
+   "rules":[{"field":"category","op":"eq","value":"ST"},{"field":"stage","op":"in","value":["pre_matric"]},{"field":"income","op":"lte","value":250000,"label":"family income up to Rs 2.5 lakh"}]},
+  {"id":"post_matric","name":"Post-Matric Scholarship for ST students","verified":false,"portal":"https://scholarships.gov.in",
+   "rules":[{"field":"category","op":"eq","value":"ST"},{"field":"stage","op":"in","value":["post_matric","postgrad"]},{"field":"income","op":"lte","value":250000,"label":"family income up to Rs 2.5 lakh"}]},
+  {"id":"top_class","name":"Top Class Education for ST students","verified":false,"portal":"https://scholarships.gov.in",
+   "rules":[{"field":"category","op":"eq","value":"ST"},{"field":"stage","op":"in","value":["post_matric","postgrad"]},{"field":"income","op":"lte","value":null,"label":"income limit (not verified)"}]},
+  {"id":"nfst","name":"National Fellowship for ST students (NFST)","verified":false,"portal":null,
+   "rules":[{"field":"category","op":"eq","value":"ST"},{"field":"stage","op":"in","value":["postgrad"]}]},
+  {"id":"nos","name":"National Overseas Scholarship (NOS)","verified":false,"portal":null,
+   "rules":[{"field":"category","op":"eq","value":"ST"},{"field":"stage","op":"in","value":["postgrad"]},{"field":"marks","op":"gte","value":60,"label":"at least 60% marks"},{"field":"income","op":"lte","value":null,"label":"income limit (not verified)"}]}
+ ]
+}

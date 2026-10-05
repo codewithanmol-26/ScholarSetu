@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ScholarSetu – SIH 2026 Prototype</title>
+<style>
+:root{--bg:#eef3ef;--card:#fff;--ink:#17261f;--mut:#5d6f66;--g:#1c6b47;--gl:#dcefe4;--o:#e0891b;--ol:#fbeacf;--r:#b5432f;--rl:#f7dfd9;--b:#d3ded7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1713;--card:#18241d;--ink:#e8f0eb;--mut:#9bb0a5;--g:#4fc08a;--gl:#1b3a2b;--o:#f0a53c;--ol:#3a2c14;--r:#e57a64;--rl:#3b1f19;--b:#2b3d33}}
+:root[data-theme="dark"]{--bg:#0f1713;--card:#18241d;--ink:#e8f0eb;--mut:#9bb0a5;--g:#4fc08a;--gl:#1b3a2b;--o:#f0a53c;--ol:#3a2c14;--r:#e57a64;--rl:#3b1f19;--b:#2b3d33}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Noto Sans","Segoe UI",Roboto,sans-serif;font-size:15px;display:flex;justify-content:center}
+#app{width:100%;max-width:440px;height:100%;display:flex;flex-direction:column;background:var(--bg);position:relative}
+header{padding:14px 16px 10px;display:flex;align-items:center;gap:10px;background:var(--g);color:#fff}
+header b{font-family:Georgia,"Times New Roman",serif;font-size:21px;letter-spacing:.2px;flex:1}
+header small{display:block;font-size:11px;opacity:.85;font-family:"Noto Sans",sans-serif;font-weight:400}
+.tg{background:rgba(255,255,255,.18);border:0;color:#fff;border-radius:14px;padding:5px 10px;font-size:12px;cursor:pointer}
+#off{display:none;background:var(--ol);color:var(--ink);font-size:12px;padding:6px 16px;border-bottom:1px solid var(--o)}
+main{flex:1;overflow-y:auto;padding:14px 14px 18px}
+nav{display:flex;border-top:1px solid var(--b);background:var(--card)}
+nav button{flex:1;border:0;background:none;color:var(--mut);padding:9px 0 8px;font-size:11px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button span{font-size:19px}nav button.on{color:var(--g);font-weight:700}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--o);outline-offset:2px}
+h2{font-family:Georgia,serif;font-size:19px;margin:2px 0 10px}
+h3{font-size:14px;margin:16px 0 8px;color:var(--mut);font-weight:600}
+.c{background:var(--card);border:1px solid var(--b);border-radius:14px;padding:12px;margin-bottom:10px}
+.row{display:flex;align-items:center;gap:8px}.sp{flex:1}
+.pill{font-size:11px;padding:2px 8px;border-radius:10px;background:var(--gl);color:var(--g);font-weight:600}
+.pill.o{background:var(--ol);color:#8a5200}.pill.r{background:var(--rl);color:var(--r)}
+@media (prefers-color-scheme:dark){.pill.o{color:var(--o)}}
+.steps{display:flex;margin-top:10px}
+.st{flex:1;text-align:center;font-size:10px;color:var(--mut);position:relative}
+.st i{display:block;width:14px;height:14px;border-radius:50%;background:var(--b);margin:0 auto 3px;position:relative;z-index:1}
+.st:not(:first-child)::before{content:"";position:absolute;top:6px;left:-50%;width:100%;height:3px;background:var(--b)}
+.st.d i,.st.d:not(:first-child)::before{background:var(--g)}.st.d{color:var(--ink)}
+.st.n i{background:var(--o);box-shadow:0 0 0 4px var(--ol)}.st.n:not(:first-child)::before{background:var(--g)}
+.btn{background:var(--g);color:#fff;border:0;border-radius:10px;padding:11px 14px;font-size:14px;font-weight:600;width:100%;cursor:pointer}
+.btn.s{background:var(--gl);color:var(--g)}.btn.w{width:auto;padding:7px 12px;font-size:12px}
+.alert{background:var(--ol);border:1px solid var(--o);border-radius:12px;padding:10px 12px;margin-bottom:12px;font-size:13px}
+label{font-size:12px;color:var(--mut);display:block;margin:8px 0 3px}
+input,select{width:100%;padding:9px;border:1px solid var(--b);border-radius:8px;background:var(--bg);color:var(--ink);font-size:14px}
+.chk{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px dashed var(--b);font-size:13px}
+.chk:last-child{border:0}.bar{height:8px;border-radius:5px;background:var(--b);overflow:hidden;width:70px}
+.bar div{height:100%;background:var(--g);transition:width .8s}.bar.l div{background:var(--o)}
+#chat{display:flex;flex-direction:column;gap:8px;min-height:240px}
+.m{max-width:85%;padding:9px 12px;border-radius:14px;font-size:14px;line-height:1.45;white-space:pre-line}
+.m.u{align-self:flex-end;background:var(--g);color:#fff;border-bottom-right-radius:4px}
+.m.a{align-self:flex-start;background:var(--card);border:1px solid var(--b);border-bottom-left-radius:4px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.chip{border:1px solid var(--g);color:var(--g);background:none;border-radius:16px;padding:6px 11px;font-size:12px;cursor:pointer}
+.ib{display:flex;gap:6px}.ib input{flex:1}.ib button{width:44px;border:0;border-radius:8px;background:var(--g);color:#fff;cursor:pointer;font-size:16px}
+.hb{display:flex;align-items:center;gap:8px;font-size:12px;margin:5px 0}.hb .t{width:78px}.hb .f{height:14px;background:var(--r);border-radius:3px;transition:width .8s}.hb .g{flex:1;background:var(--b);border-radius:3px}
+.tab{display:flex;gap:6px;margin-bottom:10px}.tab button{flex:1;padding:8px;border:1px solid var(--b);background:var(--card);color:var(--ink);border-radius:10px;font-size:13px;cursor:pointer}.tab button.on{background:var(--g);color:#fff;border-color:var(--g)}
+.toast{position:absolute;left:50%;bottom:78px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 14px;border-radius:20px;font-size:13px;display:none;z-index:9;max-width:90%}
+#app.wide{max-width:980px}#app.wide main{padding:14px 20px}
+.gov{display:flex;justify-content:space-between;font-size:11px;color:var(--mut);margin-bottom:10px;gap:8px}.gov a{color:var(--g);font-weight:700;text-decoration:none}
+.hero{background:linear-gradient(135deg,var(--g),#0e3f29);color:#fff;border-radius:16px;padding:22px 18px;margin-bottom:12px}.hero h1{font-family:Georgia,serif;font-size:26px;margin:0 0 8px}.hero p{margin:0 0 14px;opacity:.92;max-width:560px}
+.row2{display:flex;gap:10px;flex-wrap:wrap}.row2 .btn{width:auto;padding:11px 18px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:12px}.tile{border:0;color:#fff;border-radius:12px;padding:16px 6px;font-size:15px;font-weight:600;cursor:pointer}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}.stats div{background:var(--gl);border-radius:12px;padding:10px 12px;font-size:12px}.stats b{display:block;font-size:20px;font-family:Georgia,serif;color:var(--g)}
+.g2,.g3,.g4{display:grid;gap:10px}.g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.ann{padding:7px 0;border-bottom:1px dashed var(--b);font-size:13px;color:var(--g)}.ann:last-child{border:0}.mut{font-size:12px;color:var(--mut)}ul{padding-left:18px;margin:8px 0;font-size:13px}
+.fab{position:fixed;right:16px;bottom:16px;width:52px;height:52px;border-radius:50%;border:0;background:var(--o);font-size:24px;cursor:pointer;box-shadow:0 3px 10px #0004}
+.foot{font-size:11px;color:var(--mut);text-align:center;padding:16px 0 60px}
+.lbox{max-width:420px;margin:10px auto}.cap{font:italic 700 20px Georgia,serif;letter-spacing:4px;padding:6px 12px;border-radius:6px;background:repeating-linear-gradient(45deg,var(--gl),var(--gl) 4px,var(--ol) 4px,var(--ol) 8px);text-decoration:line-through wavy;white-space:nowrap}
+.sbar{display:flex;justify-content:space-between;align-items:center;background:var(--g);color:#fff;padding:8px 12px;border-radius:10px;margin-bottom:12px;font-size:13px}
+.dlb{display:flex;align-items:center;gap:12px;width:100%;border:1px solid var(--b);background:var(--card);color:var(--ink);border-radius:10px;padding:12px;cursor:pointer;text-align:left}.dlb small{display:block;color:var(--mut)}
+.or{text-align:center;color:var(--mut);margin:10px 0}.fp{display:block;font-size:12px;margin:4px 0;color:var(--g)}.rad{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;margin-bottom:6px}
+.qkc{text-align:left;border:1px solid var(--b);background:var(--card);color:var(--ink);border-radius:12px;padding:12px;cursor:pointer}
+.sheet{position:absolute;inset:0;background:#0007;display:none;align-items:flex-end;justify-content:center;z-index:20}.sheet>div{background:var(--card);width:100%;max-width:560px;max-height:85%;overflow:auto;border-radius:16px 16px 0 0;padding:16px}.toast{z-index:30}
+header{flex-wrap:wrap}.btn,nav button,.tab button,.chip{min-height:44px}details summary{cursor:pointer}
+@media(max-width:520px){#sub{display:none}header b{font-size:18px}#offb{font-size:0}#offb::before{content:"📴";font-size:14px}#lg{max-width:92px}}
+@media(min-width:760px){#app{max-width:880px}#v.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;align-content:start}#v.cols>h2,#v.cols>h3,#v.cols>.alert,#v.cols>.row:not(.c),#v.cols>div[style*="font-size:13px"],#v.cols>.btn{grid-column:1/-1}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<div id="app">
+<header><button class="tg" id="bk" style="display:none" aria-label="Go back">←</button><div style="font-size:26px">🌿</div><b>ScholarSetu<small id="sub">One app, five schemes · Prototype</small></b><button class="tg" id="hp" aria-label="Help">?</button><select class="tg" id="lg" aria-label="Language" style="width:auto;padding:5px"></select><button class="tg" id="lo" style="display:none">Logout</button><button class="tg" id="offb">Go offline</button><button class="tg" id="thm" aria-label="Toggle theme">◐</button></header>
+<div id="off">📴 Offline: showing last synced status (2 hrs ago). Changes will sync when you reconnect.</div>
+<main id="v"></main>
+<nav id="nav"></nav><div class="toast" id="toast"></div><div class="sheet" id="sh" onclick="if(event.target==this)closeSh()"></div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const S=[ // schemes: name, authority, stage index (0 submitted,1 verified,2 sanctioned,3 DBT), note
+{n:"Post-Matric (ST)",sys:"NSP",amt:"₹ 14,500 / yr",st:3,note:"₹ 7,250 credited to SBI ••4821 on 12 Sep",ok:1},
+{n:"Top Class Education",sys:"NSP",amt:"Up to ₹ 3.7 L / yr",st:1,note:"Verified. Awaiting State sanction",ok:1},
+{n:"Pre-Matric (ST)",sys:"NSP",amt:"₹ 2,250 / yr",st:-1,note:"Younger sibling: Birsa. Not yet applied",ok:0},
+{n:"National Fellowship (NFST)",sys:"SFMP",amt:"₹ 37,000 / month",st:0,note:"Deficiency: UDID/Aadhaar seeding pending",ok:0,warn:1},
+{n:"Overseas Scholarship (NOS)",sys:"NOS",amt:"Up to ₹ 20 L",st:-1,note:"Eligible after final-year marks upload",ok:0}];
+const STEPS=["Submit","Verify","Sanction","DBT"];
+let off=false,lang="en",tab="home",chatInit=false;
+const T={en:{home:"Home",apply:"Apply",jago:"JAGO",wallet:"Wallet",officer:"Officer"},hi:{home:"होम",apply:"आवेदन",jago:"जागो",wallet:"वॉलेट",officer:"अधिकारी"}};
+const ICON={home:"🏠",apply:"📝",jago:"💬",wallet:"🗂️",officer:"🏛️"};
+function toast(m){const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(t._h);t._h=setTimeout(()=>t.style.display="none",2600)}
+function stepper(i){return `<div class="steps">${STEPS.map((s,k)=>`<div class="st ${k<=i?"d":k==i+1?"n":""}"><i></i>${s}</div>`).join("")}</div>`}
+const R={portal(){},login(){},
+home(){
+ $("#v").innerHTML=`<h2>Namaste, Asha Munda 👋</h2>
+ <div class="c row"><div class="sp"><b>OTR 1234 5678 9012 34</b><div style="font-size:12px;color:var(--mut)">Class 12 → B.Sc · Ranchi, Jharkhand · ST (Munda)</div></div><span class="pill">Verified</span></div>
+ <div class="alert">⚠️ <b>1 action needed:</b> NFST needs UDID/Aadhaar seeding. <a href="#" onclick="go('jago');ask('nfst');return false" style="color:var(--g);font-weight:700">Ask JAGO how</a></div>
+ <div class="row"><div class="c sp" style="text-align:center"><b style="font-size:22px">₹ 7,250</b><div style="font-size:12px;color:var(--mut)">Received this year</div></div><div class="c sp" style="text-align:center"><b style="font-size:22px">₹ 7,250</b><div style="font-size:12px;color:var(--mut)">Expected next</div></div></div>
+ <h3>Your schemes, in one place</h3>`+S.map((s,i)=>`<div class="c"><div class="row"><b class="sp">${s.n}</b><span class="pill ${s.warn?"r":s.st<0?"o":""}">${s.st<0?"Not applied":s.warn?"Action needed":STEPS[s.st]+" done"}</span></div><div style="font-size:12px;color:var(--mut);margin-top:2px">${s.sys} · ${s.amt}</div>${s.st>=0?stepper(s.st):""}<div style="font-size:12.5px;margin-top:8px">${s.note}</div>${s.st<0?`<button class="btn s w" style="margin-top:8px" onclick="go('apply');pick(${i})">Apply now</button>`:""}</div>`).join("")+
+ `<div class="c"><b>Family view</b><div style="font-size:13px;color:var(--mut);margin-top:4px">Birsa Munda (Class 8): Pre-Matric eligible. Parent can apply with the same wallet documents.</div></div>`},
+apply(){
+ $("#v").innerHTML=`<h2>Apply for a scheme</h2><label>Scheme</label><select id="sc" onchange="pick(this.value)">${S.map((s,i)=>`<option value="${i}" ${S[i].st>=0?"disabled":""}>${s.n}${s.st>=0?" (already applied)":""}</option>`).join("")}</select><div id="ap"></div>`;
+ pick(S.findIndex(s=>s.st<0))},
+wallet(){
+ const D=[["Aadhaar (eKYC)","UIDAI","Used in 4"],["ST Caste Certificate","e-District, Jharkhand","Used in 3"],["Income Certificate","e-District","Used in 3"],["Class 12 Marksheet","DigiLocker (CBSE)","Used in 3"],["Enrolment / APAAR ID","APAAR · AISHE","Used in 2"],["Bank passbook","Uploaded","Used in 4"]];
+ $("#v").innerHTML=`<h2>Document wallet</h2><div style="font-size:13px;color:var(--mut);margin-bottom:10px">Fetched once through DigiLocker with your consent. Reused in one tap.</div>`+D.map(d=>`<div class="c row"><div style="font-size:22px">📄</div><div class="sp"><b>${d[0]}</b><div style="font-size:12px;color:var(--mut)">${d[1]}</div></div><span class="pill">${d[2]}</span></div>`).join("")+`<button class="btn s" onclick="toast('Consent log: 6 fetches, all by you')">View consent &amp; audit log</button>`},
+jago(){
+ $("#v").innerHTML=`<div class="row"><h2 class="sp">JAGO assistant</h2></div>
+ <div id="chat"></div><div class="chips" id="ch"></div><div class="ib"><input id="q" placeholder="${eff()=="en"?"Type or tap 🎤":"लिखें या 🎤 दबाएँ"}" onkeydown="if(event.key=='Enter')send()"><button onclick="mic()" aria-label="Voice">🎤</button><button onclick="send()" aria-label="Send">➤</button></div>`;
+ const g=eff()=="en"?"Namaste Asha! I can see your 5 schemes. Ask me about status, documents or payments.":"नमस्ते आशा! मैं आपकी 5 योजनाएँ देख सकता हूँ। स्थिति, दस्तावेज़ या भुगतान के बारे में पूछें।";
+ add("a",g);chips()},
+officer(){
+ $("#v").innerHTML=`<h2>Institute &amp; officer console</h2><div class="tab"><button id="t1" class="on" onclick="oq(1)">Review queue</button><button id="t2" onclick="oq(2)">Gap-finder</button></div><div id="oc"></div>`;oq(1)}
+};
+/* APPLY */
+function pick(i){
+ i=+i;if(i<0||isNaN(i)){$("#ap").innerHTML="<div class='c'>All schemes applied.</div>";return}
+ $("#sc").value=i;const s=S[i];
+ $("#ap").innerHTML=`<div class="c"><b>Eligibility check</b><div class="chk">✅ ST category (certificate on file)</div><div class="chk">✅ Family income ≤ ₹ 2.5 L</div><div class="chk">✅ Enrolled in recognised institute</div><div class="chk">✅ No other overlapping scheme</div></div>
+ <div class="c"><b>Pre-filled form</b><label>Name</label><input value="Asha Munda" readonly><label>Date of birth</label><input value="14-03-2005" readonly><label>Institute (UDISE+/AISHE)</label><input value="Ranchi Women's College · C-12345" readonly><label>Bank account</label><input value="SBI ••4821 (DBT seeded)" readonly></div>
+ <button class="btn" id="vb" onclick="verify(${i})">Verify with one tap</button><div id="vr"></div>`}
+function verify(i){
+ $("#vb").disabled=true;$("#vb").textContent="Checking sources in parallel…";
+ const C=[["DigiLocker · certificate",98,0],["UIDAI · Aadhaar name",96,0],["UDISE+/AISHE · institute",94,0],["APAAR · enrolment",91,0],["e-District · income",72,1]];
+ $("#vr").innerHTML=`<div class="c" style="margin-top:10px"><b>Unified verification</b>${C.map((c,k)=>`<div class="chk"><span class="sp">${c[0]}</span><div class="bar ${c[2]?"l":""}"><div id="b${k}" style="width:0"></div></div><b id="p${k}" style="width:62px;text-align:right;font-size:12px">…</b></div>`).join("")}<div id="res"></div></div>`;
+ C.forEach((c,k)=>setTimeout(()=>{$("#b"+k).style.width=c[1]+"%";$("#p"+k).innerHTML=c[2]?`${c[1]}% ⚠️`:`${c[1]}% ✓`;
+  if(k==4)setTimeout(()=>{$("#res").innerHTML=`<div class="alert" style="margin:10px 0 0"><b>${P().mm}</b> 72% match. It does not block you. Sent to a nodal officer for manual review.</div><button class="btn" style="margin-top:10px" onclick="submitApp(${i})">Submit application</button>`},500)},500+k*450))}
+function submitApp(i){
+ const id="SSU"+Math.floor(26000000+Math.random()*9e6);S[i].st=0;S[i].note="Submitted. Income certificate in manual review";S[i].warn=0;
+ $("#vr").innerHTML=`<div class="c" style="margin-top:10px;background:var(--gl)"><b>✅ Application submitted</b><div style="font-size:13px;margin-top:4px">ID <b>${id}</b>. SMS and push alert sent. Track it on Home.</div><button class="btn" style="margin-top:8px" onclick="go('home')">Go to Home</button></div>`;
+ $("#vb").style.display="none";toast("Alert sent: application "+id)}
+/* CHAT */
+const KB={
+ status:{k:["status","स्थिति","track","कहाँ"],en:"Your status:\n• Post-Matric: DBT done (₹ 7,250 on 12 Sep)\n• Top Class: verified, awaiting State sanction\n• NFST: deficiency, needs UDID seeding\n• Pre-Matric (Birsa) and NOS: not applied",hi:"आपकी स्थिति:\n• पोस्ट-मैट्रिक: DBT हो गया (12 सितंबर को ₹ 7,250)\n• टॉप क्लास: सत्यापित, राज्य स्वीकृति बाकी\n• NFST: UDID सीडिंग बाकी\n• प्री-मैट्रिक (बिरसा) और NOS: आवेदन नहीं किया"},
+ nfst:{k:["nfst","fellowship","udid","deficien","कमी"],en:"NFST is stuck on Aadhaar/UDID seeding. Steps:\n1. Open Wallet and confirm Aadhaar is linked\n2. Seed your bank with Aadhaar via NPCI BASE\n3. Tap re-submit. I'll alert you once it's cleared.",hi:"NFST में आधार/UDID सीडिंग बाकी है:\n1. वॉलेट में आधार जाँचें\n2. NPCI BASE से बैंक को आधार से जोड़ें\n3. फिर से जमा करें। मंजूरी पर मैं सूचना दूँगा।"},
+ pay:{k:["pay","money","dbt","paid","पैसा","भुगतान","राशि"],en:"₹ 7,250 was credited to SBI ••4821 on 12 Sep. The second instalment of ₹ 7,250 is expected after Top Class sanction. No need to check PFMS separately.",hi:"12 सितंबर को SBI ••4821 में ₹ 7,250 जमा हुए। दूसरी किस्त ₹ 7,250 स्वीकृति के बाद आएगी। PFMS अलग से देखने की ज़रूरत नहीं।"},
+ docs:{k:["document","doc","दस्तावेज़","certificate","प्रमाण"],en:"Your wallet has 6 verified documents. For NOS you still need: final-year marksheet and passport. Both can be pulled from DigiLocker.",hi:"वॉलेट में 6 सत्यापित दस्तावेज़ हैं। NOS के लिए अंतिम वर्ष की मार्कशीट और पासपोर्ट चाहिए, दोनों DigiLocker से मिल जाएँगे।"},
+ elig:{k:["eligib","eligible","apply","पात्र","योग्य"],en:"You qualify for all 5 schemes. Birsa qualifies for Pre-Matric (income ≤ ₹ 2.5 L). NOS needs 60% marks, you have 78%. Tap Apply to start.",hi:"आप सभी 5 योजनाओं के लिए पात्र हैं। बिरसा प्री-मैट्रिक के लिए पात्र है। NOS के लिए 60% अंक चाहिए, आपके 78% हैं।"}};
+function chips(){$("#ch").innerHTML=CH[kl()].map(c=>`<button class="chip" onclick="ask('${c[1]}')">${c[0]}</button>`).join("")}
+function add(w,t){const d=document.createElement("div");d.className="m "+w;d.textContent=t;$("#chat").appendChild(d);$("#v").scrollTop=1e5;if(w=="a"&&window.speechSynthesis&&add.v){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang=eff()!="en"?"hi-IN":"en-IN";speechSynthesis.speak(u)}catch(e){}}}
+function ask(key){if(tab!="jago")go("jago");const lbl=(CH[kl()].find(c=>c[1]==key)||[key])[0];add("u",lbl);setTimeout(()=>add("a",KB[key][kl()]),350)}
+function send(){const q=$("#q").value.trim();if(!q)return;$("#q").value="";add("u",q);const l=q.toLowerCase();const hit=Object.keys(KB).find(k=>KB[k].k.some(w=>l.includes(w)));setTimeout(()=>add("a",hit?KB[hit][kl()]:(eff()=="en"?"I can help with status, eligibility, documents and payments. Try one of the buttons below.":"मैं स्थिति, पात्रता, दस्तावेज़ और भुगतान में मदद कर सकता हूँ। नीचे दिए बटन आज़माएँ।")),350)}
+function mic(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;add.v=true;
+ if(!SR){toast("Voice input isn't supported here. Replies will be read aloud.");return}
+ const r=new SR();r.lang=eff()!="en"?"hi-IN":"en-IN";r.onresult=e=>{$("#q").value=e.results[0][0].transcript;send()};r.onerror=()=>toast("Couldn't hear you. Try again.");r.start();toast("Listening…")}
+/* OFFICER */
+const Q=[["Ravi Oraon","Post-Matric",96,"Auto-verified"],["Asha Munda","NFST",72,"Name mismatch: income cert"],["Sita Kujur","Top Class",68,"DOB differs: 12-04 vs 12-07"],["Mangal Hansda","Pre-Matric",93,"Auto-verified"]];
+function oq(n){
+ $("#t1").className=n==1?"on":"";$("#t2").className=n==2?"on":"";
+ if(n==1){$("#oc").innerHTML=`<div style="font-size:13px;color:var(--mut);margin-bottom:8px">Matches above 90% are auto-verified. Others wait here and never block the student.</div>`+Q.map((q,i)=>`<div class="c" id="q${i}"><div class="row"><b class="sp">${q[0]}</b><span class="pill ${q[2]>90?"":"o"}">${q[2]}%</span></div><div style="font-size:12px;color:var(--mut)">${q[1]} · ${q[3]}</div>${q[2]<90?`<div class="row" style="margin-top:8px"><button class="btn w" onclick="rv(${i},'Approved')">Approve</button><button class="btn s w" onclick="rv(${i},'Sent back with deficiency note')">Request fix</button></div>`:""}</div>`).join("")}
+ else{const D=[["Gumla",38],["Simdega",44],["Dumka",29],["Khunti",51],["Ranchi",18]];
+  $("#oc").innerHTML=`<div class="c"><b>Eligible ST students not yet applied</b><div style="font-size:12px;color:var(--mut);margin-bottom:8px">Sample data. Cross-matches APAAR/UDISE+ enrolment with scheme applications.</div>${D.map(d=>`<div class="hb"><span class="t">${d[0]}</span><div class="g"><div class="f" style="width:0" data-w="${d[1]}%"></div></div><b>${d[1]}%</b></div>`).join("")}</div><button class="btn" onclick="toast('Outreach SMS queued for 1,240 students in Khunti and Simdega')">Send outreach to top 2 districts</button>`;
+  setTimeout(()=>document.querySelectorAll(".f").forEach(f=>f.style.width=f.dataset.w),50)}}
+function rv(i,m){$("#q"+i).innerHTML=`<b>${Q[i][0]}</b><div style="font-size:13px;margin-top:4px">✅ ${m}. Student notified.</div>`}
+/* chrome */
+$("#offb").onclick=()=>{off=!off;$("#off").style.display=off?"block":"none";$("#offb").textContent=off?"Go online":"Go offline";toast(off?"Offline mode: cached data":"Back online: synced")};
+$("#thm").onclick=()=>{const e=document.documentElement,d=getComputedStyle(e).getPropertyValue("--bg").trim()=="#0f1713";e.dataset.theme=d?"light":"dark"};
+/* ===== PORTAL LAYER ===== */
+const LT={
+en:{tag:"One app for every tribal scholarship",sub:"Pre-Matric, Post-Matric, Top Class, NFST and NOS. Apply, verify, track and get paid from one place.",login:"Login",reg:"Register (Get OTR)",st:"Students",in:"Institutions",of:"Officers",pu:"Public",fe:"Fellowship",ann:"Announcements",otr:"Get your OTR",sch:"Schemes on ScholarSetu",help:"Helpdesk",how:"How it works",greet:"Namaste Asha! I can see your 5 schemes. Ask me about status, documents or payments.",nh:"Home",na:"Apply",nj:"JAGO",nw:"Wallet",no:"Officer"},
+hi:{tag:"हर जनजातीय छात्रवृत्ति के लिए एक ऐप",sub:"प्री-मैट्रिक, पोस्ट-मैट्रिक, टॉप क्लास, NFST और NOS। आवेदन, सत्यापन, ट्रैकिंग और भुगतान एक ही जगह।",login:"लॉगिन",reg:"पंजीकरण (OTR बनाएँ)",st:"छात्र",in:"संस्थान",of:"अधिकारी",pu:"आम जनता",fe:"फेलोशिप",ann:"घोषणाएँ",otr:"अपना OTR बनाएँ",sch:"स्कॉलरसेतु पर योजनाएँ",help:"हेल्पडेस्क",how:"यह कैसे काम करता है",greet:"नमस्ते आशा! मैं आपकी 5 योजनाएँ देख सकता हूँ। स्थिति, दस्तावेज़ या भुगतान के बारे में पूछें।",nh:"होम",na:"आवेदन",nj:"जागो",nw:"वॉलेट",no:"अधिकारी"},
+or:{tag:"ସମସ୍ତ ଆଦିବାସୀ ବୃତ୍ତି ପାଇଁ ଗୋଟିଏ ଆପ୍",sub:"ପ୍ରି-ମାଟ୍ରିକ୍, ପୋଷ୍ଟ-ମାଟ୍ରିକ୍, ଟପ୍ କ୍ଲାସ୍, NFST ଓ NOS। ଆବେଦନ, ଯାଞ୍ଚ, ଟ୍ରାକିଂ ଓ ଦେୟ ଗୋଟିଏ ସ୍ଥାନରେ।",login:"ଲଗଇନ୍",reg:"ପଞ୍ଜୀକରଣ (OTR)",st:"ଛାତ୍ରଛାତ୍ରୀ",in:"ଅନୁଷ୍ଠାନ",of:"ଅଧିକାରୀ",pu:"ସାଧାରଣ",fe:"ଫେଲୋସିପ୍",ann:"ବିଜ୍ଞପ୍ତି",otr:"ଆପଣଙ୍କ OTR ନିଅନ୍ତୁ",sch:"ସ୍କଲାରସେତୁରେ ଯୋଜନା",help:"ସହାୟତା",how:"କିପରି କାମ କରେ",greet:"ନମସ୍କାର ଆଶା! ଆପଣଙ୍କର ୫ଟି ଯୋଜନା ଦେଖିପାରୁଛି। ସ୍ଥିତି, ଡକ୍ୟୁମେଣ୍ଟ କିମ୍ବା ଦେୟ ବିଷୟରେ ପଚାରନ୍ତୁ।",nh:"ହୋମ୍",na:"ଆବେଦନ",nj:"ଜାଗୋ",nw:"ୱାଲେଟ୍",no:"ଅଧିକାରୀ"},
+bn:{tag:"সব উপজাতি বৃত্তির জন্য একটি অ্যাপ",sub:"প্রি-ম্যাট্রিক, পোস্ট-ম্যাট্রিক, টপ ক্লাস, NFST ও NOS। আবেদন, যাচাই, ট্র্যাকিং ও পেমেন্ট এক জায়গায়।",login:"লগইন",reg:"নিবন্ধন (OTR)",st:"ছাত্রছাত্রী",in:"প্রতিষ্ঠান",of:"আধিকারিক",pu:"সাধারণ",fe:"ফেলোশিপ",ann:"ঘোষণা",otr:"আপনার OTR নিন",sch:"স্কলারসেতুর প্রকল্প",help:"হেল্পডেস্ক",how:"কীভাবে কাজ করে",greet:"নমস্কার আশা! আপনার ৫টি প্রকল্প দেখতে পাচ্ছি। স্থিতি, নথি বা পেমেন্ট নিয়ে জিজ্ঞাসা করুন।",nh:"হোম",na:"আবেদন",nj:"জাগো",nw:"ওয়ালেট",no:"আধিকারিক"},
+sat:{tag:"ᱡᱚᱦᱟᱨ! ᱑ ᱟᱯ, ᱕ ᱥᱠᱚᱞᱟᱨᱥᱤᱯ",login:"ᱞᱚᱜᱤᱱ",reg:"ᱨᱮᱡᱤᱥᱴᱚᱨ (OTR)",st:"ᱯᱟᱲᱦᱟᱣᱤᱭᱟᱹ",nh:"ᱚᱲᱟᱜ",na:"ᱟᱵᱮᱫᱚᱱ"}};
+const LN=[["en","English"],["hi","हिन्दी"],["sat","ᱥᱟᱱᱛᱟᱲᱤ Santali"],["or","ଓଡ଼ିଆ"],["bn","বাংলা"],["mun","Mundari*"],["ho","Ho*"],["kru","Kurukh*"],["gon","Gondi*"],["bhi","Bhili*"],["kok","Kokborok*"],["kha","Khasi*"],["gar","Garo*"],["miz","Mizo*"]];
+const FB={mun:"hi",ho:"hi",kru:"hi",gon:"hi",bhi:"hi",kok:"bn",kha:"en",gar:"en",miz:"en"};
+const NK={home:"nh",apply:"na",jago:"nj",wallet:"nw",officer:"no"};
+let user=false,role="st",mode="in",cap="";
+function eff(){return LT[lang]?lang:FB[lang]}
+function kl(){return eff()=="en"?"en":"hi"}
+function t(k){const e=eff();return (LT[e]&&LT[e][k])||LT.en[k]}
+$("#lg").innerHTML=LN.map(l=>`<option value="${l[0]}">${l[1]}</option>`).join("");
+$("#lg").onchange=e=>{lang=e.target.value;if(!LT[lang])toast("Full "+LN.find(l=>l[0]==lang)[1].replace("*","")+" text is in progress (Bhashini). Showing "+LN.find(l=>l[0]==FB[lang])[1]+".");go(tab)};
+$("#lo").onclick=()=>{user=false;$("#lo").style.display="none";go("portal")};
+function nav(){const ks=role=="in"||role=="of"?["officer","jago"]:["home","apply","jago","wallet"];$("#nav").style.display=(!user||tab=="portal"||tab=="login")?"none":"flex";$("#nav").innerHTML=ks.map(k=>`<button class="${tab==k?"on":""}" onclick="go('${k}')"><span>${ICON[k]}</span>${t(NK[k])}</button>`).join("")}
+function go(x){tab=x;$("#app").classList.toggle("wide",x=="portal"||x=="login");nav();R[x]();$("#v").scrollTop=0}
+function setRole(r){role=r;mode="in";go("login")}
+function sec(id){document.getElementById(id).scrollIntoView({behavior:"smooth"})}
+R.portal=function(){
+ const tl=[["st","🎓","#e4577a"],["in","🏫","#b25cc4"],["of","🧑‍💼","#6f6bc4"],["pu","👥","#2f9fc0"],["fe","🏅","#e8741a"]];
+ const sc=[["Pre-Matric","Classes IX–X","Parents' income up to ₹ 2.5 L","NSP"],["Post-Matric","Class XI to PhD","Parents' income up to ₹ 2.5 L","NSP"],["Top Class","Notified premier institutes","Income-based, merit admission","NSP"],["NFST","M.Phil / PhD fellowship","UGC NET qualified","SFMP"],["NOS","Master's / PhD abroad","20 awards a year","NOS"]];
+ $("#v").innerHTML=`<div class="gov"><span>🇮🇳 Government of India · Ministry of Tribal Affairs (SIH 2026 prototype)</span><span><a href="#" onclick="fs(-1);return false">A-</a> <a href="#" onclick="fs(0);return false">A</a> <a href="#" onclick="fs(1);return false">A+</a></span></div>
+ <div class="hero"><h1>${t("tag")}</h1><p>${t("sub")}</p><div class="row2"><button class="btn" style="background:#fff;color:var(--g)" onclick="setRole('st')">${t("login")}</button><button class="btn" style="background:var(--o)" onclick="mode='reg';role='st';go('login')">${t("reg")}</button></div></div>
+ <div class="tiles">${tl.map(x=>`<button class="tile" style="background:${x[2]}" onclick="${x[0]=="pu"?"sec('sch')":"setRole('"+x[0]+"')"}"><div style="font-size:24px">${x[1]}</div>${t(x[0])}</button>`).join("")}</div>
+ <div class="stats"><div><b>~30 lakh</b>ST students get MoTA scholarships via DBT</div><div><b>27.1 lakh</b>ST students in higher education (AISHE 2021-22)</div><div><b>3 → 1</b>NSP, SFMP, NOS in one front door</div></div>
+ <div class="g2"><div class="c"><h3 style="margin-top:0">📢 ${t("ann")}</h3><div class="ann">Disabled students must first log in to the UDID portal and share consent before applying on NSP.</div><div class="ann">NOS result for selection year 2026-27 published (31 Jul 2026).</div><div class="ann">NOS guidelines SY 2025-26 available in Hindi and English.</div><div class="ann">The portal is open for Academic Year 2026-27 from 1 June 2026 onwards.</div><div class="ann">From AY 2026-27 students may apply for one merit-based and one or more welfare-based schemes, as per eligibility.</div></div>
+ <div class="c"><h3 style="margin-top:0">🆔 ${t("otr")}</h3><p style="margin:0 0 10px;font-size:13px">One Time Registration (OTR) is a unique 14-digit number based on Aadhaar or Aadhaar Enrolment ID. It is valid for your whole academic career, so you don't register again each year.</p><button class="btn s" onclick="mode='reg';role='st';go('login')">${t("reg")}</button></div></div>
+ ${QKH()}<h3 id="sch">${t("sch")}</h3><div class="g3">${sc.map(s=>`<div class="c"><div class="row"><b class="sp">${s[0]}</b><span class="pill o">${s[3]}</span></div><div style="font-size:13px;margin-top:4px">${s[1]}</div><div style="font-size:12px;color:var(--mut)">${s[2]}</div></div>`).join("")}</div>
+ <h3>Three portals, one front door</h3><div class="g3">
+ <div class="c"><b>NSP</b><div class="mut">scholarships.gov.in</div><ul><li>One Time Registration</li><li>Apply, status, track payment</li><li>Institute and nodal officer login</li><li>VANI multilingual chatbot</li></ul><div class="pill">In ScholarSetu: single ID + JAGO</div></div>
+ <div class="c"><b>SFMP (Canara Bank)</b><div class="mut">scholarship.canarabank.bank.in</div><ul><li>Scholar's Corner, Notices, Help</li><li>Aadhaar and UDID seeding</li><li>Payment tracking and grievances</li></ul><div class="pill">In ScholarSetu: guided seeding + in-app grievance</div></div>
+ <div class="c"><b>NOS (DoSJE / MoTA)</b><div class="mut">Citizen login</div><ul><li>About the scheme</li><li>Guidelines and results</li><li>Contact and support</li></ul><div class="pill">In ScholarSetu: NOS status on the same dashboard</div></div></div>
+ ${FEL()}<h3>${t("how")}</h3><div class="g4">${["Login with DigiLocker or OTP","Eligibility for all 5 schemes shown","One-tap verification, wallet documents reused","Track sanction and DBT, get alerts"].map((s,i)=>`<div class="c"><b>${i+1}.</b> ${s}</div>`).join("")}</div>
+ <h3>Guidelines &amp; results</h3><div class="c">${["NOS Guidelines SY 2025-26 (Hindi) · 21 Apr 2026","NOS Guidelines SY 2025-26 (English) · 21 Apr 2026","Result of NOS, Selection Year 2026-27 · 31 Jul 2026"].map(d=>`<div class="chk"><span class="sp">📄 ${d}</span><button class="btn s w" onclick="toast('Demo: opens the PDF on the official site')">View</button></div>`).join("")}</div>
+ <h3>${t("help")}</h3><div class="c" style="font-size:13px">📞 011 23384023 (working days, 3 PM to 5 PM)<br>✉️ so-nos-msje[at]gov[dot]in<br>📍 8th Floor, GPOA-3, Netaji Nagar, New Delhi 110023<br>🗣️ Voice help in Hindi, Santali, Odia, Bengali and more via JAGO</div>
+ <div class="foot">© ScholarSetu · TechVantra · SIH 2026 · Prototype with mock data. *Translations marked * are in progress and need native-speaker review.</div>
+ <button class="fab" onclick="toast('Log in to chat with JAGO about your own schemes')" aria-label="JAGO">💬</button>`};
+function fs(d){document.documentElement.style.fontSize=d==0?"":(d>0?"18px":"13px")}
+R.login=function(){
+ cap=Math.random().toString(36).slice(2,7);
+ const lb={st:"OTR / Aadhaar / registered email",fe:"Registered email (User ID)",in:"AISHE / UDISE+ code",of:"Officer ID"}[role];
+ $("#v").innerHTML=`<div class="lbox"><h2>${mode=="reg"?t("reg"):t("login")}</h2><div class="tab">${["st","in","of","fe"].map(r=>`<button class="${role==r?"on":""}" onclick="role='${r}';R.login()">${t(r)}</button>`).join("")}</div>
+ <label>${mode=="reg"?"Aadhaar or Enrolment ID":lb}</label><input id="lid" value="${PF[role].lid}" autocomplete="off">
+ ${mode=="reg"?'<label>Mobile number</label><input value="98XXXXXX21">':""}
+ <label>Type the text shown</label><div class="row"><div class="cap">${cap}</div><input id="lcp" autocomplete="off"></div>
+ <div id="otpb"></div><button class="btn" id="lgb" style="margin-top:12px" onclick="sendOtp()">Send OTP</button>
+ <div style="text-align:center;margin:10px 0;color:var(--mut)">or</div><button class="btn s" onclick="enter()">Login with DigiLocker</button>
+ <p style="font-size:12px;color:var(--mut)">Demo: use any ID. OTP is 123456. Your Aadhaar is only read with your consent (DPDP Act 2023).</p>
+ <button class="tg" style="background:none;color:var(--g);padding:0" onclick="mode=mode=='reg'?'in':'reg';R.login()">${mode=="reg"?"Already registered? Login":"New here? Get your OTR"}</button> · <button class="tg" style="background:none;color:var(--g);padding:0" onclick="go('portal')">Back to home</button></div>`};
+function sendOtp(){
+ if($("#lcp").value.trim().toLowerCase()!=cap){toast("Text doesn't match. Try again.");R.login();return}
+ $("#otpb").innerHTML=`<label>Enter OTP sent to 98XXXXXX21</label><input id="otp" inputmode="numeric" placeholder="123456">`;
+ $("#lgb").textContent="Verify and login";$("#lgb").onclick=()=>{$("#otp").value=="123456"?enter():toast("Wrong OTP. Demo OTP is 123456.")}}
+function enter(){user=true;$("#lo").style.display="block";go(role=="in"||role=="of"?"officer":"home");toast("Logged in as "+t(role))}
+/* ===== ROLE-BASED DEMO DATA ===== */
+const PF={
+st:{lid:"1234 5678 9012 34",name:"Asha Munda",first:"Asha",idl:"OTR 1234 5678 9012 34",line:"Class 12 → B.Sc · Ranchi, Jharkhand · ST (Munda)",recv:"₹ 7,250",next:"₹ 7,250",dob:"14-03-2005",inst:"Ranchi Women's College · C-12345",bank:"SBI ••4821 (DBT seeded)",mm:'Income certificate: name spelled "Asha Mundaa".',alert:"<b>1 action needed:</b> Top Class income certificate is in manual review.",fam:"Family view: Birsa Munda (Class 8) is eligible for Pre-Matric. A parent can apply using the same wallet documents.",
+ el:["ST category (certificate on file)","Family income ≤ ₹ 2.5 L","Enrolled in recognised institute","No overlapping scheme"],
+ S:[{n:"Post-Matric (ST)",sys:"NSP",amt:"₹ 14,500 / yr",st:3,note:"₹ 7,250 credited to SBI ••4821 on 12 Sep"},{n:"Top Class Education",sys:"NSP",amt:"Up to ₹ 3.7 L / yr",st:1,note:"Income certificate in manual review. Awaiting State sanction",warn:1},{n:"Pre-Matric (ST)",sys:"NSP",amt:"₹ 2,250 / yr",st:-1,note:"For younger sibling Birsa. Not yet applied"},{n:"National Fellowship (NFST)",sys:"SFMP",amt:"M.Phil / PhD",st:-1,na:1,note:"Opens after your Master's"},{n:"Overseas Scholarship (NOS)",sys:"NOS",amt:"Master's / PhD abroad",st:-1,na:1,note:"Opens after graduation"}],
+ D:[["Aadhaar (eKYC)","UIDAI","Used in 3"],["ST Caste Certificate","e-District, Jharkhand","Used in 3"],["Income Certificate","e-District","Used in 2"],["Class 12 Marksheet","DigiLocker (CBSE)","Used in 3"],["Enrolment / APAAR ID","APAAR · AISHE","Used in 2"],["Bank passbook","Uploaded","Used in 3"]],
+ K:{issue:{en:"Your Top Class income certificate reads 'Asha Mundaa' (72% match). A nodal officer is reviewing it. You can also pull a corrected copy from e-District in one tap.",hi:"टॉप क्लास में आय प्रमाणपत्र पर नाम 'Asha Mundaa' है (72% मिलान)। नोडल अधिकारी जाँच रहे हैं। आप e-District से सही प्रति भी ले सकती हैं।"},pay:{en:"₹ 7,250 was credited to SBI ••4821 on 12 Sep. The next instalment of ₹ 7,250 follows State sanction. No need to check PFMS separately.",hi:"12 सितंबर को SBI ••4821 में ₹ 7,250 जमा हुए। अगली किस्त राज्य स्वीकृति के बाद आएगी।"},docs:{en:"Your wallet has 6 verified documents. Birsa's Pre-Matric needs his school bonafide, which can come from UDISE+.",hi:"वॉलेट में 6 सत्यापित दस्तावेज़ हैं। बिरसा के प्री-मैट्रिक के लिए स्कूल बोनाफाइड UDISE+ से आ सकता है।"},elig:{en:"You qualify for Post-Matric and Top Class. Birsa qualifies for Pre-Matric. NFST and NOS open after your Master's.",hi:"आप पोस्ट-मैट्रिक और टॉप क्लास के लिए पात्र हैं। बिरसा प्री-मैट्रिक के लिए पात्र है। NFST और NOS मास्टर्स के बाद खुलेंगे।"}}},
+fe:{lid:"sunita.hembram@example.in",name:"Sunita Hembram",first:"Sunita",idl:"SFMP ID sunita.hembram · NET Ref 24••••4175",line:"PhD Economics · Ranchi University · ST (Santal)",recv:"₹ 3,33,000",next:"₹ 37,000",dob:"02-08-1998",inst:"Ranchi University · AISHE U-0412",bank:"SBI ••7730 (Aadhaar + DBT seeded)",mm:"UGC-NET award letter: name is 'Sunita Hembrom'.",alert:"<b>1 action needed:</b> NFST annual progress report is due 30 Oct.",fam:"Supervisor: Dr. R. Sahu. Consent for the progress report is requested by OTP.",
+ el:["ST category (certificate on file)","Registered for PhD in a UGC-recognised university","Family income within scheme limit","NFST fellows may apply for NOS"],
+ S:[{n:"National Fellowship (NFST)",sys:"SFMP",amt:"₹ 37,000 / month",st:3,note:"October stipend credited 1 Oct. Progress report due 30 Oct",warn:1},{n:"Overseas Scholarship (NOS)",sys:"NOS",amt:"Up to PhD abroad",st:-1,note:"Eligible. Apply when the window opens"}],
+ D:[["Aadhaar (eKYC)","UIDAI","Used in 2"],["ST Caste Certificate","e-District, Jharkhand","Used in 2"],["UGC-NET JRF award letter","UGC-NTA","Used in 2"],["PhD registration letter","Ranchi University","Used in 2"],["Bank passbook","Uploaded","Used in 2"]],
+ K:{issue:{en:"Your NFST annual progress report is due 30 Oct. Upload it from Wallet, get your supervisor's OTP consent, then submit. Your stipend continues meanwhile.",hi:"आपकी NFST वार्षिक प्रगति रिपोर्ट 30 अक्टूबर तक जमा करनी है। वॉलेट से अपलोड करें, पर्यवेक्षक की OTP सहमति लें, फिर जमा करें।"},pay:{en:"₹ 37,000 was credited to SBI ••7730 on 1 Oct. The next stipend is due 1 Nov.",hi:"1 अक्टूबर को SBI ••7730 में ₹ 37,000 जमा हुए। अगला वजीफा 1 नवंबर को।"},docs:{en:"Your wallet has 5 verified documents. NOS also needs a university offer letter and passport.",hi:"वॉलेट में 5 सत्यापित दस्तावेज़ हैं। NOS के लिए विश्वविद्यालय का ऑफर लेटर और पासपोर्ट भी चाहिए।"},elig:{en:"NFST is active. You qualify for NOS (PhD abroad, ST category). Tap Apply to start.",hi:"NFST चालू है। आप NOS (विदेश में PhD, ST वर्ग) के लिए पात्र हैं। आवेदन दबाएँ।"}}},
+in:{lid:"C-12345"},of:{lid:"NODAL-JH-RNC-07"}};
+const P=()=>PF[role]||PF.st;
+const CH={en:[["Status","status"],["My pending issue","issue"],["My payment","pay"],["Documents","docs"],["Am I eligible?","elig"]],hi:[["स्थिति","status"],["मेरी लंबित समस्या","issue"],["मेरा भुगतान","pay"],["दस्तावेज़","docs"],["क्या मैं पात्र हूँ?","elig"]]};
+const KW={status:KB.status.k,issue:KB.nfst.k.concat(["issue","pending","समस्या"]),pay:KB.pay.k,docs:KB.docs.k,elig:KB.elig.k};
+const QL={in:[["Ravi Oraon","Post-Matric",96,"Docs match"],["Mangal Hansda","Pre-Matric",93,"Docs match"],["Sita Kujur","Top Class",68,"Marksheet name differs"],["Dinesh Toppo","Post-Matric",71,"Attendance below 75%"]],of:[["Ravi Oraon","Post-Matric",96,"Institute verified"],["Asha Munda","Top Class",72,"Name mismatch: income cert"],["Sita Kujur","Top Class",68,"DOB differs: 12-04 vs 12-07"],["Mangal Hansda","Pre-Matric",93,"Institute verified"]]};
+const OT={in:["Verify students","Deficiencies"],of:["Review queue","Gap-finder","Grievances"]};
+const oo=()=>role=="in"?"in":"of";
+function ans(k){const l=kl();
+ if(!PF[role].K)return l=="en"?"You have items waiting in your queue. Open the Review tab to act.":"आपकी कतार में आइटम बाकी हैं। समीक्षा टैब खोलें।";
+ if(k=="status")return (l=="en"?"Your status:\n":"आपकी स्थिति:\n")+S.map(s=>"• "+s.n+": "+(s.st>=0?STEPS[s.st]+" ✓":s.na?"—":"not applied")).join("\n");
+ return PF[role].K[k][l]}
+function ask(k){if(tab!="jago")go("jago");const l=kl();add("u",(CH[l].find(c=>c[1]==k)||[k])[0]);setTimeout(()=>add("a",ans(k)),350)}
+function send(){const q=$("#q").value.trim();if(!q)return;$("#q").value="";add("u",q);const w=q.toLowerCase(),h=Object.keys(KW).find(k=>KW[k].some(x=>w.includes(x)));setTimeout(()=>add("a",h?ans(h):(kl()=="en"?"I can help with status, pending issues, payments, documents and eligibility. Try the buttons below.":"मैं स्थिति, लंबित समस्या, भुगतान, दस्तावेज़ और पात्रता में मदद कर सकता हूँ।")),350)}
+function chips(){const l=kl();$("#ch").innerHTML=(PF[role].K?CH[l]:[CH[l][0]]).map(c=>`<button class="chip" onclick="ask('${c[1]}')">${c[0]}</button>`).join("")}
+R.home=function(){const p=P();
+ $("#v").innerHTML=`<h2>Namaste, ${p.name} 👋</h2><div class="c row"><div class="sp"><b>${p.idl}</b><div style="font-size:12px;color:var(--mut)">${p.line}</div></div><span class="pill">Verified</span></div>
+ <div class="alert">⚠️ ${p.alert} <a href="#" onclick="go('jago');ask('issue');return false" style="color:var(--g);font-weight:700">Ask JAGO</a></div>
+ <div class="row"><div class="c sp" style="text-align:center"><b style="font-size:22px">${p.recv}</b><div style="font-size:12px;color:var(--mut)">Received this year</div></div><div class="c sp" style="text-align:center"><b style="font-size:22px">${p.next}</b><div style="font-size:12px;color:var(--mut)">Expected next</div></div></div><h3>Your schemes, in one place</h3>`+
+ S.map((s,i)=>`<div class="c"><div class="row"><b class="sp">${s.n}</b><span class="pill ${s.warn?"r":s.st<0?"o":""}">${s.warn?"Action needed":s.na?"Opens later":s.st<0?"Not applied":STEPS[s.st]+" done"}</span></div><div style="font-size:12px;color:var(--mut);margin-top:2px">${s.sys} · ${s.amt}</div>${s.st>=0?stepper(s.st):""}<div style="font-size:12.5px;margin-top:8px">${s.note}</div>${s.st<0&&!s.na?`<button class="btn s w" style="margin-top:8px" onclick="go('apply');pick(${i})">Apply now</button>`:""}</div>`).join("")+`<div class="c" style="font-size:13px;color:var(--mut)">${p.fam}</div>`};
+R.wallet=function(){$("#v").innerHTML=`<h2>Document wallet</h2><div style="font-size:13px;color:var(--mut);margin-bottom:10px">Fetched once through DigiLocker with your consent. Reused in one tap.</div>`+P().D.map(d=>`<div class="c row"><div style="font-size:22px">📄</div><div class="sp"><b>${d[0]}</b><div style="font-size:12px;color:var(--mut)">${d[1]}</div></div><span class="pill">${d[2]}</span></div>`).join("")+`<button class="btn s" onclick="toast('Consent log: all fetches were started by you')">View consent &amp; audit log</button>`};
+R.apply=function(){$("#v").innerHTML=`<h2>Apply for a scheme</h2><label>Scheme</label><select id="sc" onchange="pick(this.value)">${S.map((s,i)=>`<option value="${i}" ${s.st>=0||s.na?"disabled":""}>${s.n}${s.st>=0?" (already applied)":s.na?" (opens later)":""}</option>`).join("")}</select><div id="ap"></div>`;pick(S.findIndex(s=>s.st<0&&!s.na))};
+function pick(i){i=+i;if(isNaN(i)||!S[i]||i<0){$("#ap").innerHTML="<div class='c'>No open schemes to apply for right now.</div>";return}
+ $("#sc").value=i;const p=P();$("#ap").innerHTML=`<div class="c"><b>Eligibility check</b>${p.el.map(e=>`<div class="chk">✅ ${e}</div>`).join("")}</div>
+ <div class="c"><b>Pre-filled form</b><label>Name</label><input value="${p.name}" readonly><label>Date of birth</label><input value="${p.dob}" readonly><label>Institute (UDISE+/AISHE)</label><input value="${p.inst}" readonly><label>Bank account</label><input value="${p.bank}" readonly></div><button class="btn" id="vb" onclick="verify(${i})">Verify with one tap</button><div id="vr"></div>`}
+R.officer=function(){const o=oo();
+ const h=o=="in"?{t:"Institute console",s:"Ranchi Women's College · AISHE C-12345",st:[["214","applied"],["18","pending"],["196","forwarded"]]}:{t:"Nodal officer console",s:"Ranchi district · MoTA / State",st:[["1,284","applications"],["37","pending review"],["6","grievances"]]};
+ $("#v").innerHTML=`<h2>${h.t}</h2><div class="mut" style="margin:-6px 0 10px">${h.s}</div><div class="stats">${h.st.map(x=>`<div><b>${x[0]}</b>${x[1]}</div>`).join("")}</div><div class="tab">${OT[o].map((x,i)=>`<button onclick="oq(${i})">${x}</button>`).join("")}</div><div id="oc"></div>`;oq(0)};
+function oq(n){const o=oo();document.querySelectorAll(".tab button").forEach((b,i)=>b.className=i==n?"on":"");
+ if(n==0){$("#oc").innerHTML=`<div class="mut" style="margin-bottom:8px">Matches above 90% are auto-verified. Others wait here and never block the student.</div>`+QL[o].map((q,i)=>`<div class="c" id="q${i}"><div class="row"><b class="sp">${q[0]}</b><span class="pill ${q[2]>90?"":"o"}">${q[2]}%</span></div><div class="mut">${q[1]} · ${q[3]}</div>${q[2]<90?`<div class="row" style="margin-top:8px"><button class="btn w" onclick="rv(${i},'${o=="in"?"Verified and forwarded":"Approved"}')">${o=="in"?"Verify":"Approve"}</button><button class="btn s w" onclick="rv(${i},'Sent back with deficiency note')">Request fix</button></div>`:""}</div>`).join("")}
+ else if(o=="in"){$("#oc").innerHTML=[["Sita Kujur","Marksheet name differs"],["Dinesh Toppo","Attendance below 75%"]].map(d=>`<div class="c row"><div class="sp"><b>${d[0]}</b><div class="mut">${d[1]}</div></div><button class="btn s w" onclick="toast('SMS reminder sent to ${d[0]}')">Send SMS</button></div>`).join("")}
+ else if(n==1){const D=[["Bundu",38],["Tamar",44],["Sonahatu",29],["Angara",51],["Namkum",18]];
+  $("#oc").innerHTML=`<div class="c"><b>Eligible ST students not yet applied</b><div class="mut" style="margin-bottom:8px">Sample data by block. Cross-matches APAAR/UDISE+ enrolment with applications.</div>${D.map(d=>`<div class="hb"><span class="t">${d[0]}</span><div class="g"><div class="f" style="width:0" data-w="${d[1]}%"></div></div><b>${d[1]}%</b></div>`).join("")}</div><button class="btn" onclick="toast('Outreach SMS queued for 1,240 students in Angara and Tamar')">Send outreach to top 2 blocks</button>`;
+  setTimeout(()=>document.querySelectorAll(".f").forEach(f=>f.style.width=f.dataset.w),50)}
+ else{$("#oc").innerHTML=[["Pre-Matric DBT not received","Gumla · 12 days"],["Wrong IFSC on bank account","Dumka · 5 days"],["Certificate rejected","Simdega · 3 days"]].map((g,i)=>`<div class="c" id="g${i}"><b>${g[0]}</b><div class="mut">${g[1]}</div><button class="btn w" style="margin-top:8px" onclick="document.getElementById('g${i}').innerHTML='<b>${g[0]}</b><div class=mut>✅ Resolved. Student notified.</div>'">Resolve</button></div>`).join("")}}
+function rv(i,m){$("#q"+i).innerHTML=`<b>${QL[oo()][i][0]}</b><div style="font-size:13px;margin-top:4px">✅ ${m}. Student notified.</div>`}
+function enter(){user=true;$("#lo").style.display="block";if(PF[role].S)S.splice(0,S.length,...PF[role].S);go(role=="in"||role=="of"?"officer":"home");toast("Logged in as "+t(role)+(PF[role].name?": "+PF[role].name:""))}
+
+/* ===== LOGIN: OTP / PASSWORD / DIGILOCKER ===== */
+let lm="otp";
+const capOk=()=>{if($("#lcp").value.trim().toLowerCase()!=cap){toast("Text doesn't match. Try again.");R.login();return false}return true};
+R.login=function(){cap=Math.random().toString(36).slice(2,7);const reg=mode=="reg";
+ const lb={st:"OTR / Aadhaar / registered email",fe:"Registered email (User ID)",in:"AISHE / UDISE+ code",of:"Officer ID"}[role];
+ const body=lm=="dl"?`<div class="c" style="margin-top:10px"><b>Sign in with DigiLocker</b><p style="font-size:13px;margin:6px 0 10px">You will be sent to DigiLocker to log in and give consent. ScholarSetu never sees your DigiLocker password.</p><div id="dlb"><button class="btn" onclick="dlConsent()">Continue to DigiLocker</button></div></div>`:
+ `<label>${reg?"Aadhaar or Enrolment ID":lb}</label><input id="lid" value="${PF[role].lid}" autocomplete="off">${reg?'<label>Mobile number</label><input value="98XXXXXX21">':""}
+ ${lm=="pw"?`<label>${reg?"Create password (min 8 characters)":"Password"}</label><input id="pw" type="password" placeholder="Demo@123">`:""}
+ <label>Type the text shown</label><div class="row"><div class="cap">${cap}</div><input id="lcp" autocomplete="off"></div><div id="otpb"></div>
+ <button class="btn" id="lgb" style="margin-top:12px" onclick="${lm=="otp"?"sendOtp()":"pwLogin()"}">${lm=="otp"?"Send OTP":reg?"Create account":"Login"}</button>`;
+ $("#v").innerHTML=`<div class="lbox"><h2>${reg?t("reg"):t("login")}</h2><div class="tab">${["st","in","of","fe"].map(r=>`<button class="${role==r?"on":""}" onclick="role='${r}';R.login()">${t(r)}</button>`).join("")}</div>
+ <div class="tab">${[["otp","📱 OTP"],["pw","🔑 Password"],["dl","🪪 DigiLocker"]].map(m=>`<button class="${lm==m[0]?"on":""}" onclick="lm='${m[0]}';R.login()">${m[1]}</button>`).join("")}</div>${body}
+ <p style="font-size:12px;color:var(--mut)">Demo: OTP is 123456, password is Demo@123. Aadhaar is only read with your consent (DPDP Act 2023).</p>
+ <button class="tg" style="background:none;color:var(--g);padding:0" onclick="mode=mode=='reg'?'in':'reg';R.login()">${reg?"Already registered? Login":"New here? Get your OTR"}</button> · <button class="tg" style="background:none;color:var(--g);padding:0" onclick="go('portal')">Back to home</button></div>`};
+function pwLogin(){if(!capOk())return;const p=$("#pw").value;
+ if(mode=="reg"){p.length>=8?enter():toast("Password needs at least 8 characters.")}else{p=="Demo@123"?enter():toast("Wrong password. Demo password is Demo@123.")}}
+function dlConsent(){$("#dlb").innerHTML=`<div style="border:1px solid var(--b);border-radius:10px;padding:10px;font-size:13px"><b>🪪 DigiLocker</b><br>ScholarSetu wants to read:<ul><li>Aadhaar (name, date of birth)</li><li>Caste certificate</li><li>Latest marksheet</li></ul><div class="row"><button class="btn w" onclick="enter()">Allow</button><button class="btn s w" onclick="R.login()">Cancel</button></div></div>`}
+
+/* ===== IDEAS FROM NSP / NOS / SFMP ===== */
+const UT={in:["Institute Head","Institute Nodal Officer","Dealing Hand"],of:["Nodal Officer (scheme-wise)","District Nodal Officer","Grievance Redressal Officer","Ministry"]};
+const INST=["Ranchi Women's College · C-12345","Ranchi University · U-0412","Gumla Govt. Polytechnic · C-20871","Dumka Tribal College · C-33102","Khunti Degree College · C-41987"];
+const QK=[["📝","Institute registration","New institutes with a valid AISHE / UDISE+ code can register","inst"],["🔎","Find institutes","Search institutes available on ScholarSetu","find"],["👤","Nodal officers (scheme-wise)","Officers designated for each scheme","nodS"],["📍","Nodal officers (district-wise)","District nodal officers for your area","nodD"],["🛠️","Grievance registration","Register a grievance or check its status","grv"],["📞","Helpdesk","ScholarSetu and PFMS helpdesk","help"],["🏷️","Know your AISHE code","Find the AISHE code of your institute","aishe"],["📊","Dashboard","Applications received and processed, by scheme","dash"]];
+const QKH=()=>`<h3>Services</h3><div class="g3">${QK.map(q=>`<button class="qkc" onclick="qk('${q[3]}')"><div style="font-size:22px">${q[0]}</div><b>${q[1]}</b><div class="mut">${q[2]}</div></button>`).join("")}</div>`;
+const FEL=()=>`<h3>Fellowship schemes</h3>${[["Ministry of Tribal Affairs (MoTA)","National Fellowship for ST students (NFST) for M.Phil / PhD, disbursed through SFMP."],["Ministry of Electronics and IT (MeitY)","Visvesvaraya PhD Scheme."],["Ministry of Youth Affairs and Sports","Schemes appear here as they are onboarded."]].map(f=>`<details class="c"><summary><b>${f[0]}</b></summary><p style="font-size:13px;margin:8px 0 0">${f[1]}</p></details>`).join("")}`;
+function sheet(h){$("#sh").innerHTML=`<div>${h}<button class="btn s" style="margin-top:12px" onclick="closeSh()">Close</button></div>`;$("#sh").style.display="flex"}
+function closeSh(){$("#sh").style.display="none"}
+function fi(v){$("#fr").innerHTML=INST.filter(x=>x.toLowerCase().includes(v.toLowerCase())).map(x=>`<div class="chk">${x}</div>`).join("")}
+function qk(a){const tb=r=>`<table style="width:100%;font-size:13px;border-collapse:collapse">${r.map(x=>`<tr>${x.map(c=>`<td style="padding:6px;border-bottom:1px solid var(--b)">${c}</td>`).join("")}</tr>`).join("")}</table><p class="mut">Sample data for the prototype.</p>`;
+ const H={inst:`<h2>Institute registration</h2><label>AISHE / UDISE+ code</label><input><label>Institute name</label><input><button class="btn" style="margin-top:10px" onclick="closeSh();toast('Request sent to your District Nodal Officer')">Submit</button>`,
+ find:`<h2>Find institutes</h2><input placeholder="Type a name or code" oninput="fi(this.value)"><div id="fr"></div>`,
+ nodS:`<h2>Nodal officers (scheme-wise)</h2>`+tb([["Post-Matric (ST)","Scholarship Division, MoTA"],["Top Class","MoTA and State Tribal Welfare Dept."],["NFST","UGC and MoTA"],["NOS","MoTA (ST) / DoSJE (SC)"]]),
+ nodD:`<h2>Nodal officers (district-wise)</h2>`+tb([["Ranchi","District Welfare Officer"],["Gumla","District Welfare Officer"],["Khunti","District Welfare Officer"],["Dumka","District Welfare Officer"]]),
+ grv:`<h2>Grievance registration</h2><label>Category</label><select><option>Payment not received</option><option>Document rejected</option><option>Login problem</option><option>Other</option></select><label>Describe the problem (up to 500 words)</label><textarea style="width:100%;height:90px;border:1px solid var(--b);border-radius:8px;background:var(--bg);color:var(--ink);padding:8px"></textarea><button class="btn" style="margin-top:10px" onclick="closeSh();toast('Grievance registered: GRV-'+Math.floor(1e5+Math.random()*9e5))">Submit</button>`,
+ help:`<h2>Helpdesk</h2><p style="font-size:14px">📞 011 23384023 (working days, 3 PM to 5 PM)<br>✉️ so-nos-msje[at]gov[dot]in<br>💬 JAGO voice help after login</p>`,
+ aishe:`<h2>Know your AISHE code</h2><label>State</label><select><option>Jharkhand</option><option>Odisha</option><option>Chhattisgarh</option></select><label>Institute name</label><input value="Ranchi Women's College"><button class="btn" style="margin-top:10px" onclick="toast('AISHE code: C-12345 (sample)')">Find code</button>`,
+ dash:`<h2>Dashboard</h2>`+tb([["Applications received","1,284"],["Verified","1,061"],["Sanctioned","742"],["Paid (DBT)","698"]])};
+ sheet(H[a]);if(a=="find")fi("")}
+let ut=0;lm="pw";
+R.login=function(){cap=Math.random().toString(36).slice(2,7);const reg=mode=="reg",pv=role=="in"||role=="of";
+ const lb={st:"OTR / registered email",fe:"Your email ID is your User ID, in capital",in:"User ID (AISHE / UDISE+ code)",of:"User ID"}[role];
+ const capH=`<div class="row" style="margin-top:8px"><div class="cap sp">${cap.toUpperCase()}</div><button class="tg" style="background:var(--gl);color:var(--g)" onclick="R.login()" aria-label="Refresh captcha">↻</button></div><input id="lcp" placeholder="Fill the text as in the image" autocomplete="off" style="margin-top:6px">`;
+ let h=`<div class="lbox"><div class="sbar"><span>Signing into <b>ScholarSetu · ${t(role)}</b></span><button class="tg" onclick="go('portal')">Change</button></div>`;
+ if(reg)h+=`<h2>${t("reg")}</h2><label>Scheme</label><select>${["Pre-Matric","Post-Matric","Top Class","NFST","NOS"].map(x=>`<option>${x}</option>`).join("")}</select><label>Student ID / OTR</label><input placeholder="Student ID"><label>Date of birth</label><input placeholder="DD-MON-YYYY"><label>Email</label><input placeholder="ABC@ABC.COM"><p style="font-size:12px;color:var(--mut)">Password will be sent to the email ID above. If you are not using this email ID, get it updated through your institute.</p>${capH}<button class="btn" style="margin-top:12px" onclick="regSubmit()">Register</button>`;
+ else{h+=`<h2>Log in to your account</h2><button class="dlb" onclick="dlConsent()"><span style="font-size:24px">🪪</span><div class="sp"><b>Continue with DigiLocker</b><small>Secured Government Login</small></div><span>→</span></button><div class="or">or</div><div class="tab">${[["pw","Login with Password"],["otp","Login with OTP"]].map(m=>`<button class="${lm==m[0]?"on":""}" onclick="lm='${m[0]}';R.login()">${m[1]}</button>`).join("")}</div>`;
+  if(pv)h+=`<div class="rad">${UT[role].map((u,i)=>`<label style="display:flex;gap:4px;align-items:center;margin:0;color:var(--ink)"><input type="radio" name="ut" style="width:auto" ${i==ut?"checked":""} onchange="ut=${i}"> ${u}</label>`).join("")}</div>`;
+  h+=`<label>${lb}</label><input id="lid" value="${PF[role].lid}" autocomplete="off" ${role=="fe"?'style="text-transform:uppercase"':""}>${lm=="pw"?`<label>Password</label><input id="pw" type="password" placeholder="Demo@123"><a href="#" class="fp" onclick="toast('Reset link sent to your registered email and mobile (demo)');return false">Forgot password?</a>`:""}${capH}`;
+  if(pv)h+=`<input id="pin" type="password" placeholder="Enter Security PIN *" inputmode="numeric" style="margin-top:6px"><label style="display:flex;gap:8px;align-items:flex-start;color:var(--ink)"><input id="cons" type="checkbox" style="width:auto;margin-top:3px"> I consent to ScholarSetu authenticating my Aadhaar details registered with the scheme portal, from UIDAI.</label>`;
+  h+=`<div id="otpb"></div><button class="btn" id="lgb" style="margin-top:12px" onclick="${lm=="otp"?"sendOtp()":"pwLogin()"}">${lm=="otp"?"Send OTP":"Login"}</button><div class="c" style="margin-top:12px;font-size:12.5px"><b>Instructions</b><br>${pv?"Select your user type and use your existing login credentials. Institute Head is for monitoring only. Institutes without credentials should contact their District or State Nodal Officer.":"Use your OTR, email or mobile. Your documents are fetched only with your consent."}<br>🆕 The portal is open for AY 2026-27 from 1 June 2026.</div>`}
+ $("#v").innerHTML=h+`<p style="font-size:12px;color:var(--mut)">Demo: OTP 123456 · Password Demo@123 · PIN any</p><button class="tg" style="background:none;color:var(--g);padding:0" onclick="mode=mode=='reg'?'in':'reg';R.login()">${reg?"Already registered? Login":"New User-Registration"}</button> · <button class="tg" style="background:none;color:var(--g);padding:0" onclick="go('portal')">Back to home</button> · <button class="tg" style="background:none;color:var(--g);padding:0" onclick="go('help')">Need help?</button></div>`};
+function pre(){if(!capOk())return false;if(role=="in"||role=="of"){if(!$("#pin").value){toast("Enter your security PIN.");return false}if(!$("#cons").checked){toast("Please tick the Aadhaar consent box.");return false}}return true}
+function sendOtp(){if(!pre())return;$("#otpb").innerHTML=`<label>Enter OTP sent to 98XXXXXX21</label><input id="otp" inputmode="numeric" placeholder="123456">`;$("#lgb").textContent="Verify and login";$("#lgb").onclick=()=>{$("#otp").value=="123456"?enter():toast("Wrong OTP. Demo OTP is 123456.")}}
+function pwLogin(){if(!pre())return;$("#pw").value=="Demo@123"?enter():toast("Wrong password. Demo password is Demo@123.")}
+function regSubmit(){if(!capOk())return;toast("Password sent to your email (demo: use Demo@123)");mode="in";lm="pw";R.login()}
+function dlConsent(){sheet(`<h2>🪪 DigiLocker</h2><p style="font-size:14px">ScholarSetu wants to read:</p><ul><li>Aadhaar (name, date of birth)</li><li>Caste certificate</li><li>Latest marksheet</li></ul><button class="btn" onclick="closeSh();enter()">Allow</button>`)}
+
+/* ===== BACK, HELP, RESPONSIVE ===== */
+ICON.help="❓";NK.help="nhp";LT.en.nhp="Help";LT.hi.nhp="सहायता";LT.or.nhp="ସହାୟତା";LT.bn.nhp="সহায়তা";
+const HS=[];let started=0;
+function go(x,rep){if(started&&tab!=x&&!rep){if(tab=="login"&&(x=="home"||x=="officer"))HS.length=0;else HS.push(tab)}if(x=="portal")HS.length=0;started=1;tab=x;
+ $("#app").classList.toggle("wide",x=="portal"||x=="login");$("#v").className=x=="home"||x=="wallet"?"cols":"";$("#bk").style.display=HS.length?"":"none";nav();R[x]();$("#v").scrollTop=0;try{history.pushState(null,"")}catch(e){}}
+function back(){if(HS.length)go(HS.pop(),1)}
+function nav(){const ks=(role=="in"||role=="of"?["officer","jago"]:["home","apply","jago","wallet"]).concat("help");$("#nav").style.display=(!user||tab=="portal"||tab=="login")?"none":"flex";$("#nav").innerHTML=ks.map(k=>`<button class="${tab==k?"on":""}" onclick="go('${k}',1)"><span>${ICON[k]}</span>${t(NK[k])}</button>`).join("")}
+$("#bk").onclick=back;$("#hp").onclick=()=>go("help");window.onpopstate=back;document.addEventListener("keydown",e=>{if(e.key=="Escape")closeSh()});
+const G={st:["Log in with OTP, password or DigiLocker","Check Home for your schemes and any action needed","Apply in the Apply tab. Documents come from your Wallet","Track Sanction and DBT. Ask JAGO anything, by text or voice"],in:["Log in with your institute credentials and security PIN","Open the Verify students list","Verify, or send back with a note","Send SMS reminders for deficiencies"],of:["Log in with the right user type","Review low-confidence matches in the queue","Use the Gap-finder to reach unreached students","Resolve grievances and notify students"]};
+const FAQ=[["Getting started","What is OTR?","One Time Registration (OTR) is a unique 14-digit number based on your Aadhaar or Aadhaar Enrolment ID. It is valid for your whole academic career, so you register once."],
+["Getting started","I did not get the OTP","Wait 30 seconds and tap Send OTP again. Check that the mobile number is the one linked to your account. You can also log in with your password or DigiLocker."],
+["Getting started","What is DigiLocker login?","You sign in on DigiLocker and allow ScholarSetu to read only the documents you approve. ScholarSetu never sees your DigiLocker password."],
+["Applications","Which schemes can I apply for?","The Apply tab lists only schemes you are eligible for. Others show Opens later. Students may take one merit-based and one or more welfare-based schemes."],
+["Applications","My document shows a mismatch","Small spelling or date differences go to an officer for manual review. You are never blocked. You can also add a corrected copy to your Wallet."],
+["Applications","What does Action needed mean?","A document or step is pending. Open JAGO and tap My pending issue to see exactly what to do."],
+["Payments","How do I know my money was sent?","Home shows each scheme's stage: Submit, Verify, Sanction, DBT. When DBT is done, the amount and bank account are shown. No separate PFMS check is needed."],
+["Payments","Payment not received","Check that your bank account is Aadhaar seeded for DBT. If it is, register a grievance from Contact us below."],
+["Account","Forgot password","Use Forgot password on the login page. A reset link goes to your registered email and mobile. You can also log in with OTP or DigiLocker."],
+["Language and access","How do I change language?","Use the language box at the top. Hindi, Odia, Bengali and part of Santali are ready. Other languages show a nearby language for now. JAGO also accepts voice."],
+["Language and access","My internet is slow","Status you have already opened stays available offline. Changes are sent when you reconnect."]];
+R.help=function(){const g=role=="in"?G.in:role=="of"?G.of:G.st;
+ $("#v").innerHTML=`<h2>Help</h2><input id="hq" placeholder="Search help, for example OTP or payment" oninput="hf(this.value)"><h3>Quick guide</h3><div class="c">${g.map((s,i)=>`<div class="chk"><b>${i+1}.</b><span>${s}</span></div>`).join("")}</div><h3>Questions and answers</h3><div id="fq"></div><h3>Contact us</h3><div class="c" style="font-size:14px">📞 011 23384023 (working days, 3 PM to 5 PM)<br>✉️ so-nos-msje[at]gov[dot]in<div class="row2" style="margin-top:10px"><button class="btn w" onclick="qk('grv')">Register a grievance</button>${user?`<button class="btn s w" onclick="go('jago')">Ask JAGO</button>`:`<button class="btn s w" onclick="go('login')">Log in to use JAGO</button>`}</div></div>`;hf("")};
+function hf(v){v=v.toLowerCase();const r=FAQ.filter(f=>(f[0]+f[1]+f[2]).toLowerCase().includes(v));$("#fq").innerHTML=r.length?r.map(f=>`<details class="c"><summary><b>${f[1]}</b> <span class="pill o">${f[0]}</span></summary><p style="font-size:13px;margin:8px 0 0">${f[2]}</p></details>`).join(""):`<div class="c mut">No match. Try another word or contact us below.</div>`}
+
+go("portal");
+
+</script><script src="jago.js"></script>
+</body></html>
